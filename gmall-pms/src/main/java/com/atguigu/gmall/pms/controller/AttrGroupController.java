@@ -1,12 +1,14 @@
 package com.atguigu.gmall.pms.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.pms.vo.GroupVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,32 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+
+    @ApiOperation("根据三级分类id查询分组及组下的规格参数")
+    @GetMapping("/withattrs/cat/{catId}")
+    public Resp<List<GroupVo>> queryByCid(@PathVariable("catId")Long cid){
+
+        List<GroupVo> attrGroupVOs = this.attrGroupService.queryByCid(cid);
+        return Resp.ok(attrGroupVOs);
+    }
+
+
+
+    @GetMapping("withattr/{gid}")
+    public Resp<GroupVo> queryDroupWithAttrsByGid(@PathVariable("gid") Long gid){
+
+       GroupVo groupVos= this.attrGroupService.queryDroupWithAttrsByGid(gid);
+
+        return Resp.ok(groupVos);
+    }
+
+    @ApiOperation("根据三级分类id分页查询")
+    @GetMapping("{catId}")
+    public Resp<PageVo> queryByCidPage(@PathVariable("catId")Long catId, QueryCondition condition){
+
+        PageVo pageVo = this.attrGroupService.queryByCidPage(catId, condition);
+        return Resp.ok(pageVo);
+    }
     /**
      * 列表
      */
